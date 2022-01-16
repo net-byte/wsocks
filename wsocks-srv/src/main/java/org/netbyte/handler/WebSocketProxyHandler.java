@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 public class WebSocketProxyHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
     /**
-     * The proxy
+     * The config
      */
     private Config config;
     /**

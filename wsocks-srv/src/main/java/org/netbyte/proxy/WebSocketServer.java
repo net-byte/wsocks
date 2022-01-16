@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+/**
+ * The Websocket server
+ */
 @Component
 public class WebSocketServer {
     private static final EventLoopGroup bossGroup = new NioEventLoopGroup();

@@ -33,7 +33,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
      */
     private final static ObjectMapper objectMapper = new ObjectMapper();
     /**
-     * Config
+     * The config
      */
     private Config config;
     /**

@@ -20,9 +20,9 @@ import static io.netty.handler.codec.http.HttpMethod.*;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 
 /**
- * WebSocketHomePageHandler
+ * WebSocketHttpHandler
  */
-public class WebSocketHomePageHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+public class WebSocketHttpHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest req) throws Exception {
@@ -42,7 +42,7 @@ public class WebSocketHomePageHandler extends SimpleChannelInboundHandler<FullHt
 
         // Send the index page
         if ("/".equals(req.uri()) || "/index.html".equals(req.uri())) {
-            ByteBuf content = Unpooled.copiedBuffer("Hello World", CharsetUtil.UTF_8);
+            ByteBuf content = Unpooled.copiedBuffer("Hello,世界!", CharsetUtil.UTF_8);
             FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), OK, content);
 
             res.headers().set(CONTENT_TYPE, "text/html; charset=UTF-8");
