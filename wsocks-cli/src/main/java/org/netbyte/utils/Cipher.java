@@ -24,7 +24,7 @@ public class Cipher {
     }
 
     /**
-     * Generate 32 bit Key
+     * Generate the xor key
      *
      * @param data
      * @return
