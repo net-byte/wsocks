@@ -8,7 +8,6 @@ import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import org.netbyte.model.Config;
-import org.netbyte.model.Counter;
 import org.netbyte.model.ProxyAddr;
 import org.netbyte.utils.Cipher;
 import org.netbyte.utils.SocksServerUtils;
@@ -42,14 +41,11 @@ public class WebSocketProxyHandler extends SimpleChannelInboundHandler<WebSocket
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
-        Counter.totalConnections.getAndIncrement();
-        Counter.currentConnections.getAndIncrement();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         SocksServerUtils.closeOnFlush(ctx.channel());
-        Counter.currentConnections.getAndDecrement();
     }
 
     @Override

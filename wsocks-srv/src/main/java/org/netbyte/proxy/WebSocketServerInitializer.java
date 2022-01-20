@@ -24,6 +24,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.traffic.GlobalTrafficShapingHandler;
+import org.netbyte.handler.ConnectionCountHandler;
 import org.netbyte.handler.WebSocketFrameHandler;
 import org.netbyte.handler.WebSocketHttpHandler;
 import org.netbyte.model.Config;
@@ -56,6 +57,7 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         if (sslCtx != null) {
             pipeline.addLast(sslCtx.newHandler(ch.alloc()));
         }
+        pipeline.addLast(new ConnectionCountHandler());
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new HttpObjectAggregator(65536));
         pipeline.addLast(new WebSocketServerCompressionHandler());
