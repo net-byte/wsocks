@@ -23,9 +23,13 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.ssl.SslContext;
+import io.netty.handler.traffic.GlobalTrafficShapingHandler;
 import org.netbyte.handler.WebSocketFrameHandler;
 import org.netbyte.handler.WebSocketHttpHandler;
 import org.netbyte.model.Config;
+import org.netbyte.model.Counter;
+
+import java.util.concurrent.Executors;
 
 /**
  * WebSocketServerInitializer
@@ -36,14 +40,19 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
 
     private final SslContext sslCtx;
 
-    public WebSocketServerInitializer( Config config, SslContext sslCtx) {
+    private final GlobalTrafficShapingHandler trafficHandler;
+
+    public WebSocketServerInitializer(Config config, SslContext sslCtx) {
         this.config = config;
         this.sslCtx = sslCtx;
+        this.trafficHandler = new GlobalTrafficShapingHandler(Executors.newScheduledThreadPool(1), 1000);
+        Counter.trafficCounter = trafficHandler.trafficCounter();
     }
 
     @Override
     public void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
+        pipeline.addLast(trafficHandler);
         if (sslCtx != null) {
             pipeline.addLast(sslCtx.newHandler(ch.alloc()));
         }

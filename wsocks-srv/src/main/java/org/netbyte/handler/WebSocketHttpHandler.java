@@ -13,6 +13,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.util.CharsetUtil;
+import org.netbyte.model.Counter;
 import org.netbyte.utils.SocksServerUtils;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.*;
@@ -32,22 +33,29 @@ public class WebSocketHttpHandler extends SimpleChannelInboundHandler<FullHttpRe
                     ctx.alloc().buffer(0)));
             return;
         }
-
         // Allow only GET methods.
         if (!GET.equals(req.method())) {
             sendHttpResponse(ctx, req, new DefaultFullHttpResponse(req.protocolVersion(), FORBIDDEN,
                     ctx.alloc().buffer(0)));
             return;
         }
-
-        // Send the index page
+        // index page
         if ("/".equals(req.uri()) || "/index.html".equals(req.uri())) {
             ByteBuf content = Unpooled.copiedBuffer("Hello,世界!", CharsetUtil.UTF_8);
             FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), OK, content);
-
             res.headers().set(CONTENT_TYPE, "text/html; charset=UTF-8");
             HttpUtil.setContentLength(res, content.readableBytes());
-
+            sendHttpResponse(ctx, req, res);
+        } else if ("/stats".equals(req.uri())) { // stats page
+            String body = String.format("Upload %s Download %s <br> Total Connections %d Current Connections %d"
+                    , Counter.formatByte(Counter.trafficCounter.cumulativeWrittenBytes())
+                    , Counter.formatByte(Counter.trafficCounter.cumulativeReadBytes())
+                    , Counter.totalConnections.longValue()
+                    , Counter.currentConnections.longValue());
+            ByteBuf content = Unpooled.copiedBuffer(body, CharsetUtil.UTF_8);
+            FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), OK, content);
+            res.headers().set(CONTENT_TYPE, "text/html; charset=UTF-8");
+            HttpUtil.setContentLength(res, content.readableBytes());
             sendHttpResponse(ctx, req, res);
         } else {
             sendHttpResponse(ctx, req, new DefaultFullHttpResponse(req.protocolVersion(), NOT_FOUND,
