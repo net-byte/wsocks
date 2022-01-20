@@ -42,11 +42,14 @@ public class WebSocketProxyHandler extends SimpleChannelInboundHandler<WebSocket
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
+        Counter.totalConnections.getAndIncrement();
+        Counter.currentConnections.getAndIncrement();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         SocksServerUtils.closeOnFlush(ctx.channel());
+        Counter.currentConnections.getAndDecrement();
     }
 
     @Override
@@ -80,18 +83,5 @@ public class WebSocketProxyHandler extends SimpleChannelInboundHandler<WebSocket
                 }
             });
         }
-    }
-
-    @Override
-    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-        super.channelRegistered(ctx);
-        Counter.totalConnections.getAndIncrement();
-        Counter.currentConnections.getAndIncrement();
-    }
-
-    @Override
-    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        super.channelUnregistered(ctx);
-        Counter.currentConnections.getAndDecrement();
     }
 }

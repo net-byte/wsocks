@@ -48,8 +48,8 @@ public class WebSocketHttpHandler extends SimpleChannelInboundHandler<FullHttpRe
             sendHttpResponse(ctx, req, res);
         } else if ("/stats".equals(req.uri())) { // stats page
             String body = String.format("Upload %s Download %s <br> Total Connections %d Current Connections %d"
-                    , Counter.formatByte(Counter.trafficCounter.cumulativeWrittenBytes())
                     , Counter.formatByte(Counter.trafficCounter.cumulativeReadBytes())
+                    , Counter.formatByte(Counter.trafficCounter.cumulativeWrittenBytes())
                     , Counter.totalConnections.longValue()
                     , Counter.currentConnections.longValue());
             ByteBuf content = Unpooled.copiedBuffer(body, CharsetUtil.UTF_8);
