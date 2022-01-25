@@ -48,11 +48,11 @@ ws.scheme=wss
 ## Run java jar
 ### client
 ```
-java -jar wsocks-cli-1.0-SNAPSHOT.jar --spring.config.location=/data/config/application.properties
+java -jar wsocks-cli-1.0.0.jar --spring.config.location=/data/config/application.properties
 ```
 ### server
 ```
-java -jar wsocks-srv-1.0-SNAPSHOT.jar --spring.config.location=/data/config/application.properties
+java -jar wsocks-srv-1.0.0.jar --spring.config.location=/data/config/application.properties
 ```
 ## Run on docker
 
