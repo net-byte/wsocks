@@ -1,7 +1,7 @@
 #!bin/bash
 set -e
 JAR_PATH="./target/"
-JAR_NAME="wsocks-srv-1.0-SNAPSHOT.jar"
+JAR_NAME="wsocks-srv-1.0.0.jar"
 LOG_NAME="wsocks-srv.out"
 JAVA_OPTS="-server -Xmx128m -Xms128m"
 CONFIG_ARGS="--spring.config.location=./target/config/application.properties"

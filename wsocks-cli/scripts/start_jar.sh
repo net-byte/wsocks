@@ -2,7 +2,7 @@
 export LANG="zh_CN.utf-8"
 set -e
 JAR_PATH="./target/"
-JAR_NAME="wsocks-cli-1.0-SNAPSHOT.jar"
+JAR_NAME="wsocks-cli-1.0.0.jar"
 LOG_NAME="wsocks-cli.out"
 JAVA_OPTS="-server -Xmx128m -Xms128m"
 CONFIG_ARGS="--spring.config.location=./target/config/application.properties"
